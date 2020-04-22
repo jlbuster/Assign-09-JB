@@ -31,4 +31,4 @@ All tests pass
 
 ## Video
 
-![](/videos/full_video.mp4)
+See video folder
