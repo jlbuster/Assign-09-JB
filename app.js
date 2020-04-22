@@ -10,7 +10,164 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//const writeFile = util.promisify(fs.writeFile)
 
+const employees = []
+
+function engineerQuestions(type) {
+    inquirer.prompt([
+        {
+            message: 'Please enter you name',
+            name: 'name',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your ID',
+            name: 'id',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your email',
+            name: 'email',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your GitHub username',
+            name: 'github',
+            type: 'input'
+        }
+    ]).then(response => {
+        switch(type) {
+            case 'Engineer':
+                let engineer = new Engineer(response.name, response.id, response.email, response.github, type)
+                employees.push(engineer)
+                newRole()
+            break
+        }
+    })
+}
+
+function managerQuestions(type) {
+    console.log("Please input the manager's info")
+    inquirer.prompt([
+        {
+            message: 'Please enter your name',
+            name: 'name',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your ID',
+            name: 'id',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your email',
+            name: 'email',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your office number',
+            name: 'office',
+            type: 'input'
+        }
+    ]).then(response => {
+        switch(type) {
+            case 'Manager':
+                let manager = new Manager(response.name, response.id, response.email, response.office, type)
+                employees.push(manager)
+                newRole()
+            break
+        }
+    })
+}
+
+function internQuestions(type) {
+    inquirer.prompt([
+        {
+            message: 'Please enter you name',
+            name: 'name',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your ID',
+            name: 'id',
+            type: 'input'
+        },
+        {
+            message: 'Please enter your email',
+            name: 'email',
+            type: 'input'
+        },
+        {
+            message: 'Please enter the School you attend',
+            name: 'school',
+            type: 'input'
+        }
+    ]).then(response => {
+        switch(type) {
+            case 'Intern':
+                let intern = new Intern(response.name, response.id, response.email, response.school, type)
+                employees.push(intern)
+                newRole()
+            break
+        }
+    })
+}
+
+function roleSelect() {
+    return inquirer.prompt({
+        message: 'Please choose a role for your team',
+        name: 'role',
+        type: 'list',
+        choices: ['Engineer', 'Intern']
+    }).then(answers => {
+        console.log(answers.role)
+        if (answers.role == 'Engineer') {
+            engineerQuestions(answers.role)
+        } else if (answers.role == 'Intern') {
+            internQuestions(answers.role)
+        }
+    }).catch(error => {
+        if (err) {
+            console.log(error)
+        }
+    })
+}
+
+function newRole() {
+    return inquirer.prompt({
+        message: 'Add a new member to the team?',
+        name: 'add',
+        type: 'list',
+        choices: ['Yes', 'No']
+    }).then(answers => {
+        if (answers.add == 'Yes') {
+            roleSelect()
+        } else if (answers.add == 'No') {
+            // employeeList()
+            fs.writeFile(outputPath, render(employees), function (err) {
+                if (err) {
+                    throw err
+                }
+            })
+            console.log('Done!')
+        }
+    }).catch(error => {
+        if(err) {
+            console.log(error)
+        }
+    })
+}
+
+function createTeam() {
+    managerQuestions('Manager')
+}
+
+// function employeeList() {
+//     console.log(employees)
+// }
+
+createTeam()
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
