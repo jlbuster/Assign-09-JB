@@ -31,4 +31,4 @@ All tests pass
 
 ## Video
 
-See video folder
+https://youtu.be/HGP9R3W5Hfc
