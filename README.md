@@ -18,8 +18,13 @@ Uses jest, and inquirer
 
 All tests pass
 
+![](/images/tests.png)
 
 ## Gif of Running Application
 
+![](/gifs/assign-09_node.gif)
 
 ## Screenshots of created HTML file
+
+![](/images/html1.png)
+![](/images/html2.png)
